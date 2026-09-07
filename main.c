@@ -11,11 +11,18 @@ typedef struct no {
 no *lista = NULL;
 int tamanho = 0;
 
+void input_tratado(int *n);
+void inserir_inicio(no **lista, int num);
+void inserir_pos_especifica(no **lista, int num, int id);
+void inserir_final(no **lista, int num);
+void remover(no **lista, int id);
+void buscar(no *lista, int num);
+void listar(no *lista);
 
 void input_tratado(int *n){
     while (1){ // input
         if (scanf("%d", n) != 1){ 
-            printf("Entrada inválida. Digite um número inteiro: ");
+            printf("Entrada invalida. Digite um numero inteiro: ");
             while (getchar() != '\n');
             continue;
         }
@@ -26,7 +33,7 @@ void input_tratado(int *n){
 void inserir_inicio(no **lista, int num){ // concluído
     no *novo = malloc(sizeof(no));
     if (novo == NULL){
-        printf("Erro ao alocar memória!");
+        printf("Erro ao alocar memoria!");
         return;
     }
     else{
@@ -36,12 +43,12 @@ void inserir_inicio(no **lista, int num){ // concluído
         if (*lista != NULL) (*lista)->anterior = novo;
         *lista = novo;
     }
-    printf("\nO número %d foi inserido no inicio da lista.\n", num);
+    printf("\nO numero %d foi inserido no inicio da lista.\n", num);
     tamanho++;
 }
 void inserir_pos_especifica(no **lista, int num, int id){ // concluído
     if (id <= 0 || id > tamanho+1){
-        printf("Posição escolhida inválida.");
+        printf("Posicao escolhida invalida.");
         return;
     }
     else if (id == tamanho+1){
@@ -56,7 +63,7 @@ void inserir_pos_especifica(no **lista, int num, int id){ // concluído
     no *novo = malloc(sizeof(no));
 
     if (novo == NULL){ 
-        printf("Erro ao alocar memória!");
+        printf("Erro ao alocar memoria!");
         return;
     }
 
@@ -71,7 +78,7 @@ void inserir_pos_especifica(no **lista, int num, int id){ // concluído
         novo->proximo = aux;
         novo->anterior->proximo = novo;
         
-        printf("\nO número %d foi inserido na posição %d da lista.\n", num, id);
+        printf("\nO numero %d foi inserido na posicao %d da lista.\n", num, id);
         tamanho++;
     }
 
@@ -80,7 +87,7 @@ void inserir_final(no **lista, int num){
     no *aux, *novo = malloc(sizeof(no));
 
     if (novo == NULL){ 
-        printf("Erro ao alocar memória!");
+        printf("Erro ao alocar memoria!");
         return;
     }
 
@@ -101,13 +108,13 @@ void inserir_final(no **lista, int num){
             novo->anterior = aux;
         }
     }
-    printf("\nO número %d foi inserido no final da lista.\n", num);
+    printf("\nO numero %d foi inserido no final da lista.\n", num);
     tamanho++;
 
 }
 void remover(no **lista, int id){ 
     if (id <= 0 || id > tamanho){
-        printf("Posição escolhida inválida.");
+        printf("Posicao escolhida invalida.");
         return;
     }
     no *aux = *lista;
@@ -127,7 +134,7 @@ void remover(no **lista, int id){
             aux->proximo->anterior = aux->anterior;
         }
     }
-    printf("\nO número %d da posição %d foi removido da lista.\n", aux->valor, id);
+    printf("\nO numero %d da posicao %d foi removido da lista.\n", aux->valor, id);
 
     free(aux);
     tamanho--;
@@ -141,17 +148,17 @@ void buscar(no *lista, int num){
         cont++;
     }
     if (aux == NULL){
-        printf("\nO número %d não está contido na lista.\n", num);
+        printf("\nO numero %d nao esta contido na lista.\n", num);
     }
     else if (aux->valor == num){
-        printf("\n O número %d está presente na posição %d da lista.\n", num, cont);
+        printf("\n O numero %d esta presente na posicao %d da lista.\n", num, cont);
     }
 }
 
 void listar(no *lista){ // concluído
     if (tamanho == 0){
         printf("-----------------------------------------\n");
-        printf("Não há elementos na lista, seu bocó.\n");
+        printf("Nao ha elementos na lista, seu boco.\n");
         printf("-----------------------------------------\n");
         return;
     }
@@ -162,22 +169,22 @@ void listar(no *lista){ // concluído
     printf("=-=-=-=-=-=-=-=-=-=-=-=-==-=-\n");
     if (tamanho == 1){
         
-        printf("\nNÓ %d\nValor: %d\nAnterior: NULL\nProximo: NULL\n", cont, aux->valor);
+        printf("\nNO %d\nValor: %d\nAnterior: NULL\nProximo: NULL\n", cont, aux->valor);
         printf("----------------------------------------");
     }
     else{
-        printf("\nNÓ %d\nValor: %d\nAnterior: NULL\nProximo: %d\n", cont, aux->valor, aux->proximo->valor);
+        printf("\nNO %d\nValor: %d\nAnterior: NULL\nProximo: %d\n", cont, aux->valor, aux->proximo->valor);
         while (aux->proximo->proximo != NULL){
             aux = aux->proximo;
             cont++;
-            printf("NÓ %d\nValor: %d\nAnterior: %d\nProximo: %d\n", cont, aux->valor, aux->anterior->valor, aux->proximo->valor);
+            printf("NO %d\nValor: %d\nAnterior: %d\nProximo: %d\n", cont, aux->valor, aux->anterior->valor, aux->proximo->valor);
         }
         aux = aux->proximo;
         cont++;
-        printf("NÓ %d\nValor: %d\nAnterior: %d\nProximo: NULL\n", cont, aux->valor, aux->anterior->valor);
+        printf("NO %d\nValor: %d\nAnterior: %d\nProximo: NULL\n", cont, aux->valor, aux->anterior->valor);
     }
     printf("\n------------------------------\n");
-    printf("Há %d elementos na lista.\n", tamanho);
+    printf("Ha %d elementos na lista.\n", tamanho);
     printf("------------------------------\n");
 
 }
@@ -189,17 +196,17 @@ int main(){
     do {
         // MENU INICIAL
         printf("=======================>    MENU    <=======================\n");  
-        printf("Selecione uma opção (digite apenas o valor inteiro):\n");
+        printf("Selecione uma opcao (digite apenas o valor inteiro):\n");
         printf(">(0) Sair\n");
-        printf(">(1) Inserir no início\n");
-        printf(">(2) Inserir em uma posição específica\n");
+        printf(">(1) Inserir no inicio\n");
+        printf(">(2) Inserir em uma posicao especifica\n");
         printf(">(3) Inserir no final\n");
         printf(">(4) Remover\n>(5) Buscar\n>(6) Listar\n");
-        printf("Opção: ");
+        printf("Opcao: ");
 
         while (1){ // input
         if (scanf("%d", &opcao) != 1){ // Leitura da operação e verificação se escreveu um numero de fato
-            printf("Entrada inválida. Digite um número.\n");
+            printf("Entrada invalida. Digite um numero.\n");
             while (getchar() != '\n'); // limpa o buffer
             continue;
         }
@@ -208,44 +215,44 @@ int main(){
             break;
         }
         // caso seja inteiro, mas não entre 0 e 6:
-        printf("Opção inválida. Sua opção deve ser um inteiro entre 0 e 6. \nTente novamente: ");
+        printf("Opcao invalida. Sua opcao deve ser um inteiro entre 0 e 6. \nTente novamente: ");
     }
 
     switch (opcao) { // Processamento de cada caso
 
         case 1:
-            printf("\nVocê escolheu INSERIR NO INÍCIO!\n");
-            printf("Digite o número que você quer inserir: ");
+            printf("\nVoce escolheu INSERIR NO INICIO!\n");
+            printf("Digite o numero que voce quer inserir: ");
             input_tratado(&num);
             inserir_inicio(&lista, num);
             break;
 
         case 2:
-            printf("\nVocê escolheu INSERIR EM UMA POSIÇÃO ESPECÍFICA!\n");
-            printf("Digite o número que você quer inserir: ");
+            printf("\nVocê escolheu INSERIR EM UMA POSICAO ESPECIFICA!\n");
+            printf("Digite o numero que voce quer inserir: ");
             input_tratado(&num);
-            printf("\nDigite a posição que você quer este número: ");
+            printf("\nDigite a posicao que voce quer este numero: ");
             input_tratado(&pos);
             inserir_pos_especifica(&lista, num, pos);
             break;
 
         case 3:
-            printf("\nVocê escolheu INSERIR NO FINAL!\n");
-            printf("Digite o número que você quer inserir: ");
+            printf("\nVoce escolheu INSERIR NO FINAL!\n");
+            printf("Digite o numero que voce quer inserir: ");
             input_tratado(&num);
             inserir_final(&lista, num);
             break;
 
         case 4:
-            printf("\nVocê escolheu REMOVER!\n");
-            printf("Digite a posição do número que você quer remover: ");
+            printf("\nVoce escolheu REMOVER!\n");
+            printf("Digite a posicao do numero que voce quer remover: ");
             input_tratado(&pos);
             remover(&lista, pos);
             break;
 
         case 5:
-            printf("\nVocê escolheu BUSCAR!\n");
-            printf("Digite o número que você quer buscar: ");
+            printf("\nVoce escolheu BUSCAR!\n");
+            printf("Digite o numero que voce quer buscar: ");
             input_tratado(&num);
             buscar(lista, num);
             break;
@@ -260,12 +267,12 @@ int main(){
         }
 
     // Solicitação de nova operação
-    printf("\nDeseja realizar uma nova operação? [y/n]: ");
+    printf("\nDeseja realizar uma nova operacao? [y/n]: ");
     scanf(" %c", &nova_operacao);
 
     // Caso o usuário digite algo diferente de 'y' ou 'n':
     while (tolower(nova_operacao) != 'y' && tolower(nova_operacao) != 'n'){
-        printf("\nResposta inválida. Utilize [y] para SIM e [n] para NÃO: ");
+        printf("\nResposta invalida. Utilize [y] para SIM e [n] para NAO: ");
         scanf(" %c", &nova_operacao);
     }
     } while (tolower(nova_operacao) == 'y');
