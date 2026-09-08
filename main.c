@@ -1,5 +1,5 @@
-#include <stdio.h> // biblioteca padrão
-#include <stdlib.h> // para usar malloc e fazer alocação de memória
+#include <stdio.h>
+#include <stdlib.h> 
 #include <ctype.h>
 
 typedef struct no {
@@ -20,7 +20,7 @@ void buscar(no *lista, int num);
 void listar(no *lista);
 
 void input_tratado(int *n){
-    while (1){ // input
+    while (1){
         if (scanf("%d", n) != 1){ 
             printf("Entrada invalida. Digite um numero inteiro: ");
             while (getchar() != '\n');
@@ -30,7 +30,7 @@ void input_tratado(int *n){
     }
 }
 
-void inserir_inicio(no **lista, int num){ // concluído
+void inserir_inicio(no **lista, int num){
     no *novo = malloc(sizeof(no));
     if (novo == NULL){
         printf("Erro ao alocar memoria!");
@@ -46,7 +46,7 @@ void inserir_inicio(no **lista, int num){ // concluído
     printf("\nO numero %d foi inserido no inicio da lista.\n", num);
     tamanho++;
 }
-void inserir_pos_especifica(no **lista, int num, int id){ // concluído
+void inserir_pos_especifica(no **lista, int num, int id){
     if (id <= 0 || id > tamanho+1){
         printf("Posicao escolhida invalida.");
         return;
@@ -95,7 +95,7 @@ void inserir_final(no **lista, int num){
         novo->valor = num;
         novo->proximo = NULL;
 
-        if (*lista == NULL){ // verifica se tem elemento na lista
+        if (*lista == NULL){
             *lista = novo;
             novo->anterior = NULL;
         }
@@ -155,7 +155,7 @@ void buscar(no *lista, int num){
     }
 }
 
-void listar(no *lista){ // concluído
+void listar(no *lista){
     if (tamanho == 0){
         printf("-----------------------------------------\n");
         printf("Nao ha elementos na lista, seu boco.\n");
@@ -183,6 +183,14 @@ void listar(no *lista){ // concluído
         cont++;
         printf("NO %d\nValor: %d\nAnterior: %d\nProximo: NULL\n", cont, aux->valor, aux->anterior->valor);
     }
+
+    aux = lista;
+    printf("\n%d", aux->valor);
+    while (aux->proximo != NULL){
+        aux = aux->proximo;
+        printf(" <-> %d", aux->valor);
+    }
+
     printf("\n------------------------------\n");
     printf("Ha %d elementos na lista.\n", tamanho);
     printf("------------------------------\n");
@@ -194,7 +202,6 @@ int main(){
     int opcao;
     char nova_operacao = 'y';
     do {
-        // MENU INICIAL
         printf("=======================>    MENU    <=======================\n");  
         printf("Selecione uma opcao (digite apenas o valor inteiro):\n");
         printf(">(0) Sair\n");
@@ -204,21 +211,20 @@ int main(){
         printf(">(4) Remover\n>(5) Buscar\n>(6) Listar\n");
         printf("Opcao: ");
 
-        while (1){ // input
-        if (scanf("%d", &opcao) != 1){ // Leitura da operação e verificação se escreveu um numero de fato
+        while (1){
+        if (scanf("%d", &opcao) != 1){ 
             printf("Entrada invalida. Digite um numero.\n");
-            while (getchar() != '\n'); // limpa o buffer
+            while (getchar() != '\n'); 
             continue;
         }
 
-        if (opcao >= 0 && opcao <= 6){ // caso esteja tudo certo
+        if (opcao >= 0 && opcao <= 6){ 
             break;
         }
-        // caso seja inteiro, mas não entre 0 e 6:
         printf("Opcao invalida. Sua opcao deve ser um inteiro entre 0 e 6. \nTente novamente: ");
     }
 
-    switch (opcao) { // Processamento de cada caso
+    switch (opcao) { 
 
         case 1:
             printf("\nVoce escolheu INSERIR NO INICIO!\n");
@@ -266,18 +272,17 @@ int main(){
             return 0;
         }
 
-    // Solicitação de nova operação
+    
     printf("\nDeseja realizar uma nova operacao? [y/n]: ");
     scanf(" %c", &nova_operacao);
 
-    // Caso o usuário digite algo diferente de 'y' ou 'n':
+    
     while (tolower(nova_operacao) != 'y' && tolower(nova_operacao) != 'n'){
         printf("\nResposta invalida. Utilize [y] para SIM e [n] para NAO: ");
         scanf(" %c", &nova_operacao);
     }
     } while (tolower(nova_operacao) == 'y');
 
-    // Encerrando o programa (caso o usuário digite 'n'):
     printf("\nDesligando o programa...");
     return 0;
 }
