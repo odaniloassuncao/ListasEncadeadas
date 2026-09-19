@@ -66,14 +66,22 @@ NoArv *remover(NoArv *raiz, int chave)
             if (raiz->esquerda == NULL && raiz->direita == NULL)
             {
                 free(raiz);
-                printf("No folha removido: %d", chave);
+                printf("No removido: %d", chave);
                 return NULL;
             }
             else
             {
                 if (raiz->esquerda != NULL && raiz->direita != NULL)
                 {
-                    /* code */
+                    NoArv *aux = raiz->esquerda;
+                    while (aux->direita != NULL)
+                    {
+                        aux = aux->direita;
+                    }
+                    raiz->valor = aux->valor;
+                    aux->valor = chave;
+                    raiz->esquerda = remover(raiz->esquerda,chave);
+                    return raiz;
                 }
                 else{
                     NoArv *aux;
@@ -85,7 +93,7 @@ NoArv *remover(NoArv *raiz, int chave)
                         aux = raiz->direita;
                     }
                     free(raiz);
-                    printf("No com 1 filho removido: %d", chave);
+                    printf("No removido: %d", chave);
                     return aux;
                 }
             }
@@ -104,20 +112,56 @@ NoArv *remover(NoArv *raiz, int chave)
     }
 }
 
+void pre_ordem(NoArv *raiz ){
+    printf("%d ", raiz->valor);
+    if (raiz->esquerda != NULL)
+    {
+        pre_ordem(raiz->esquerda);
+    }
+    if (raiz->direita != NULL)
+    {
+        pre_ordem(raiz->direita);
+    }
+    
+}
+
+void em_ordem(NoArv *raiz ){
+    if (raiz->esquerda != NULL)
+    {
+        em_ordem(raiz->esquerda);
+    }
+    printf("%d ", raiz->valor);
+    if (raiz->direita != NULL)
+    {
+        em_ordem(raiz->direita);
+    }   
+}
+
+void pos_ordem(NoArv *raiz ){
+    if (raiz->esquerda != NULL)
+    {
+        pos_ordem(raiz->esquerda);
+    }
+    if (raiz->direita != NULL)
+    {
+        pos_ordem(raiz->direita);
+    }   
+    printf("%d ", raiz->valor);
+}
+
 int main()
 {
-    int opcao, valor;
+    int opcao, valor, ordem;
     NoArv *busca, *raiz = NULL;
 
     do
     {
-        printf("=======================>    MENU    <=======================\n");
+        printf("\n=======================>    MENU    <=======================\n");
         printf("Selecione uma opcao (digite apenas o valor inteiro):\n");
         printf(">(1) Inserir valor\n");
         printf(">(2) Buscar valor\n");
         printf(">(3) Remover valor\n");
         printf(">(4) Percorrer arvore\n");
-        printf(">(5) Imprimir arvore\n");
         printf(">(0) Sair\n");
         printf("Opcao: ");
         scanf("%d", &opcao);
@@ -128,7 +172,7 @@ int main()
             printf("Digite um numero que deseja inserir: ");
             scanf("%d", &valor);
             raiz = inserir(raiz, valor);
-            printf("Numero inserido com sucesso!");
+            printf("Numero inserido com sucesso!\n");
             break;
 
         case 2:
@@ -150,12 +194,42 @@ int main()
             scanf("%d", &valor);
             raiz= remover(raiz, valor);
             break;
+        
+        case 4:
+            if (raiz == NULL) {
+                printf("\nA arvore esta vazia (nenhum valor inserido)!\n");
+                break;}
+            else{    
+            printf("Escolha um percurso: \n");
+            printf("(1) Pre-ordem\n");
+            printf("(2) Em ordem\n");
+            printf("(3) Pos-ordem\n");
+            printf("Opcao: \n");
+            scanf("%d", &ordem);
+                switch (ordem)
+                {
+                case 1:
+                    pre_ordem(raiz);
+                    break;
+                case 2:
+                    em_ordem(raiz);
+                break;
+                case 3:
+                    pos_ordem(raiz);
+                break;
+                default:
+                    printf("Opcao invalida, tente novamente\n");
+                    break;
+                }
+                break;
+                }
 
         default:
             if (opcao != 0)
             {
-                printf("Opcao invalida, tente novamente.");
+                printf("Opcao invalida, tente novamente.\n");
             }
+            break;
         }
 
     } while (opcao != 0);
