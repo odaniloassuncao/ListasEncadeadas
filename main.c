@@ -108,6 +108,7 @@ NoArv *remover(NoArv *raiz, int chave)
             {
                 raiz->direita = remover(raiz->direita, chave);
             }
+            return raiz;
         }
     }
 }
