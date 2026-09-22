@@ -1,6 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+int ler_inteiro(void)
+{
+    int valor;
+    while (scanf("%d", &valor) != 1)
+    {
+        int c;
+        while ((c = getchar()) != '\n' && c != EOF)
+            ;
+        printf("Entrada invalida! Digite um numero inteiro: ");
+    }
+    return valor;
+}
+
 typedef struct no
 {
     int valor;
@@ -80,16 +93,18 @@ NoArv *remover(NoArv *raiz, int chave)
                     }
                     raiz->valor = aux->valor;
                     aux->valor = chave;
-                    raiz->esquerda = remover(raiz->esquerda,chave);
+                    raiz->esquerda = remover(raiz->esquerda, chave);
                     return raiz;
                 }
-                else{
+                else
+                {
                     NoArv *aux;
                     if (raiz->esquerda != NULL)
                     {
                         aux = raiz->esquerda;
                     }
-                    else{
+                    else
+                    {
                         aux = raiz->direita;
                     }
                     free(raiz);
@@ -113,7 +128,8 @@ NoArv *remover(NoArv *raiz, int chave)
     }
 }
 
-void pre_ordem(NoArv *raiz ){
+void pre_ordem(NoArv *raiz)
+{
     printf("%d ", raiz->valor);
     if (raiz->esquerda != NULL)
     {
@@ -123,10 +139,10 @@ void pre_ordem(NoArv *raiz ){
     {
         pre_ordem(raiz->direita);
     }
-    
 }
 
-void em_ordem(NoArv *raiz ){
+void em_ordem(NoArv *raiz)
+{
     if (raiz->esquerda != NULL)
     {
         em_ordem(raiz->esquerda);
@@ -135,10 +151,11 @@ void em_ordem(NoArv *raiz ){
     if (raiz->direita != NULL)
     {
         em_ordem(raiz->direita);
-    }   
+    }
 }
 
-void pos_ordem(NoArv *raiz ){
+void pos_ordem(NoArv *raiz)
+{
     if (raiz->esquerda != NULL)
     {
         pos_ordem(raiz->esquerda);
@@ -146,8 +163,19 @@ void pos_ordem(NoArv *raiz ){
     if (raiz->direita != NULL)
     {
         pos_ordem(raiz->direita);
-    }   
+    }
     printf("%d ", raiz->valor);
+}
+
+void liberar_arvore(NoArv *raiz)
+{
+    if (raiz == NULL)
+    {
+        return;
+    }
+    liberar_arvore(raiz->esquerda);
+    liberar_arvore(raiz->direita);
+    free(raiz);
 }
 
 int main()
@@ -165,48 +193,66 @@ int main()
         printf(">(4) Percorrer arvore\n");
         printf(">(0) Sair\n");
         printf("Opcao: ");
-        scanf("%d", &opcao);
+        opcao = ler_inteiro();
 
         switch (opcao)
         {
         case 1:
             printf("Digite um numero que deseja inserir: ");
-            scanf("%d", &valor);
+            valor = ler_inteiro();
             raiz = inserir(raiz, valor);
             printf("Numero inserido com sucesso!\n");
             break;
 
         case 2:
-            printf("Digite um numero que deseja buscar: ");
-            scanf("%d", &valor);
-            busca = buscar(raiz, valor);
-            if (busca)
+            if (raiz == NULL)
             {
-                printf("\n Numero encontrado: %d\n", busca->valor);
+                printf("\nA arvore esta vazia(nenhum valor inserido)!\n");
+                break;
             }
             else
             {
-                printf("Numero nao encontrado.\n");
+                printf("Digite um numero que deseja buscar: ");
+                valor = ler_inteiro();
+                busca = buscar(raiz, valor);
+                if (busca)
+                {
+                    printf("\n Numero encontrado: %d\n", busca->valor);
+                }
+                else
+                {
+                    printf("Numero nao encontrado.\n");
+                }
+                break;
             }
-            break;
-
         case 3:
-            printf("Digite um valor que deseja remover: ");
-            scanf("%d", &valor);
-            raiz= remover(raiz, valor);
-            break;
-        
+            if (raiz == NULL)
+            {
+                printf("\nA arvore esta vazia(nenhum valor inserido)!\n");
+                break;
+            }
+            else
+            {
+
+                printf("Digite um valor que deseja remover: ");
+                valor = ler_inteiro();
+                raiz = remover(raiz, valor);
+                break;
+            }
         case 4:
-            if (raiz == NULL) {
+            if (raiz == NULL)
+            {
                 printf("\nA arvore esta vazia (nenhum valor inserido)!\n");
-                break;}
-            else{    
-            printf("Escolha um percurso: \n");
-            printf("(1) Pre-ordem\n");
-            printf("(2) Em ordem\n");
-            printf("(3) Pos-ordem\n");
-            printf("Opcao: \n");
-            scanf("%d", &ordem);
+                break;
+            }
+            else
+            {
+                printf("Escolha um percurso: \n");
+                printf("(1) Pre-ordem\n");
+                printf("(2) Em ordem\n");
+                printf("(3) Pos-ordem\n");
+                printf("Opcao: \n");
+                ordem = ler_inteiro();
                 switch (ordem)
                 {
                 case 1:
@@ -214,16 +260,16 @@ int main()
                     break;
                 case 2:
                     em_ordem(raiz);
-                break;
+                    break;
                 case 3:
                     pos_ordem(raiz);
-                break;
+                    break;
                 default:
                     printf("Opcao invalida, tente novamente\n");
                     break;
                 }
                 break;
-                }
+            }
 
         default:
             if (opcao != 0)
@@ -235,5 +281,6 @@ int main()
 
     } while (opcao != 0);
 
+    liberar_arvore(raiz);
     return 0;
 }
